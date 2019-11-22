@@ -1,0 +1,2 @@
+simplejson
+mysql-connector-python
