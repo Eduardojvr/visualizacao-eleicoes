@@ -65,3 +65,22 @@ class Banco:
         cnx.close()
         return lista_dict
 
+    def candidato_regiao(self):
+        cnx = mysql.connector.connect(user='admin', password='@d2019',
+                                host='127.0.0.1',
+                                database='candidatura')
+            
+        cursor = cnx.cursor()
+        query = "select c.siglaUf, count(c.siglaUf) as total from candidato c group by c.siglaUf;" 
+        cursor.execute(query)
+        lista_dict = []
+
+        for (siglaUf, total) in cursor:
+            lista = {
+                "siglaUf": siglaUf,
+                "total" : total
+            }
+            lista_dict.append(lista)
+        cursor.close()
+        cnx.close()
+        return lista_dict

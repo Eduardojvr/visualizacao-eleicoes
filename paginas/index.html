@@ -101,7 +101,7 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-chart-area"></i>
-            Partidos dominantes em cada região (quantidade de candidatos eleitos)</div>
+            Candidatos por região</div>
           <div class="card-body" style="padding-left: 30px;">
             <svg version="1.1" id="svg-map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="800px" height="800px" viewBox="0 0 450 460" enable-background="new 0 0 450 460" xml:space="preserve">
               <g>
@@ -477,10 +477,6 @@ Candidaturas por cor</div>
   <script src="static/js/demo/chart-area-demo.js"></script>
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="//d3js.org/topojson.v1.min.js"></script>
-  <script src="static/js/mapa.js"></script>
-
-  
-  
 
 <script type="text/javascript">
 
@@ -639,6 +635,38 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+// ==================  Mapa ====================
+
+  var c = 0;
+  var sigla = [];
+  var total = [];
+  var listaCandidaturaRegiao = {{ lista_json_candidato_regiao|safe }};
+  while(listaCandidaturaRegiao[c]){
+    sigla.push(listaCandidaturaRegiao[c]['siglaUf']);
+    total.push(listaCandidaturaRegiao[c]['total']);
+    c+=1;
+  }  
+  var states = document.getElementsByClassName("estado");  
+
+  for(var i = 0; i < states.length; i++) {
+    states[i].onclick = function() {
+          var local ='';
+          var qtd = 0;
+          var q = 0;
+          while(sigla[q]){
+            if(sigla[q] == document.getElementById(this.getAttribute('name')).innerHTML){
+              local = sigla[q];
+              qtd = total[q];
+            }
+            q+=1;
+          }
+          // alert(document.getElementById(this.getAttribute('name')).innerHTML);
+          alert('Quantidade de candidatos: '+ qtd);
+    	    // alert(this.getAttribute('name') + ' ' + this.getAttribute('code'));
+    }
+  }
+  
 </script>
 
 </body>
