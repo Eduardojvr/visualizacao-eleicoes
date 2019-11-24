@@ -35,10 +35,31 @@
   <link href="static/css/sb-admin.css" rel="stylesheet">
   <link href="static/css/mapa.css" rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Informações</h4>
+        </div>
+        <div class="modal-body">
+          <p>Candidatos por região</p>
+          <a id="regiao"></a><br>          
+          <a id="quantidade"></a>
 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
     <a class="navbar-brand mr-1" href="index.html">Visualização de dados</a>
@@ -477,7 +498,8 @@ Candidaturas por cor</div>
   <script src="static/js/demo/chart-area-demo.js"></script>
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="//d3js.org/topojson.v1.min.js"></script>
-
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
 // =============  Gráfico de barras ===============
@@ -640,6 +662,7 @@ var myLineChart = new Chart(ctx, {
 
   var c = 0;
   var sigla = [];
+  var nome = [];
   var total = [];
   var listaCandidaturaRegiao = {{ lista_json_candidato_regiao|safe }};
   while(listaCandidaturaRegiao[c]){
@@ -650,6 +673,7 @@ var myLineChart = new Chart(ctx, {
   var states = document.getElementsByClassName("estado");  
 
   for(var i = 0; i < states.length; i++) {
+
     states[i].onclick = function() {
           var local ='';
           var qtd = 0;
@@ -662,7 +686,10 @@ var myLineChart = new Chart(ctx, {
             q+=1;
           }
           // alert(document.getElementById(this.getAttribute('name')).innerHTML);
-          alert('Quantidade de candidatos: '+ qtd);
+          document.getElementById('regiao').innerHTML ='Região: '+local;
+          document.getElementById('quantidade').innerHTML ='Total de candidaturas: '+ qtd + ' candidatos';
+          $("#myModal").modal("show");
+          // alert('Quantidade de candidatos: '+ qtd);
     	    // alert(this.getAttribute('name') + ' ' + this.getAttribute('code'));
     }
   }
