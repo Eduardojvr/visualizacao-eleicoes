@@ -171,3 +171,4 @@ class Banco:
         cursor.close()
         cnx.close()
         return lista_dict_m
+        

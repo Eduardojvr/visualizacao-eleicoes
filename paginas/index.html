@@ -457,7 +457,7 @@
                 <div class="card mb-3">
                   <div class="card-header">
     <i class="fas fa-chart-pie"></i>
-    Candidaturas e Candidatos eleitos por sexo</div>
+    Candidatos eleitos por sexo</div>
                   <div class="card-body">
                     <canvas id="graficoGenero" width="100%" height="50"></canvas>        </div>
                   </div>
@@ -772,30 +772,40 @@ var tmpM = {{lista_json_masculino_eleito|safe}}
 
 var totalFeminino = tmpF[0]['feminino'];
 var totalMasculino = tmpM[0]['masculino'];
+var totalEleitos = parseInt(totalFeminino)+parseInt(totalMasculino);
 
 var ctx = document.getElementById("graficoGenero");
 var myLineChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["Masculino", "Feminino"],
+    labels: ["Candidato"],
     datasets: [
         {
-            label: "Total de candidaturas",
+            label: "Total de candidatos eleitos",
             fillColor: "rgba(220,220,220,0.5)",
             backgroundColor: "rgba(2,117,216,1)",
             strokeColor: "rgba(220,220,220,0.8)",
             highlightFill: "rgba(220,220,220,0.75)",
             highlightStroke: "rgba(220,220,220,1)",
-            data: [masculino, feminino]
+            data: [totalEleitos]
         },
         {
-            label: "Total eleito",
+            label: "Total eleito masculino",
             fillColor: "rgba(151,187,205,0.5)",
             backgroundColor: "rgba(0,128,0,1)",
             strokeColor: "rgba(151,187,205,0.8)",
             highlightFill: "rgba(151,187,205,0.75)",
             highlightStroke: "rgba(151,187,205,1)",
-            data: [totalMasculino, totalFeminino]
+            data: [totalMasculino]
+        },
+        {
+            label: "Total eleito feminino",
+            fillColor: "rgba(151,187,205,0.5)",
+            backgroundColor: "rgba(98, 0, 133, 1)",
+            strokeColor: "rgba(151,187,205,0.8)",
+            highlightFill: "rgba(151,187,205,0.75)",
+            highlightStroke: "rgba(151,187,205,1)",
+            data: [totalFeminino]
         }
     ],
   },
@@ -815,7 +825,7 @@ var myLineChart = new Chart(ctx, {
       yAxes: [{
         ticks: {
           min: 0,
-          max: 360000,
+          max: 70000,
           maxTicksLimit: 5
         },
         gridLines: {
