@@ -84,3 +84,90 @@ class Banco:
         cursor.close()
         cnx.close()
         return lista_dict
+
+    def participacao_sexo_f(self):
+        cnx = mysql.connector.connect(user='admin', password='@d2019',
+                                host='127.0.0.1',
+                                database='candidatura')
+            
+        cursor = cnx.cursor()
+        query = "select c.sexo, count(c.sexo) as feminino from candidato c where c.sexo = 'F';" 
+
+        cursor.execute(query)
+        lista_dict_f = []
+
+        for (sexo, feminino) in cursor:
+            lista = {
+                "sexo": sexo,
+                "feminino" : feminino
+            }
+            lista_dict_f.append(lista)
+        cursor.close()
+        cnx.close()
+        return lista_dict_f
+
+
+    def participacao_sexo_m(self):
+        cnx = mysql.connector.connect(user='admin', password='@d2019',
+                                host='127.0.0.1',
+                                database='candidatura')
+            
+        cursor = cnx.cursor()
+        query = "select c.sexo, count(c.sexo) as masculino from candidato c where c.sexo = 'M';" 
+
+        cursor.execute(query)
+        lista_dict_m = []
+
+        for (sexo, masculino) in cursor:
+            lista = {
+                "sexo": sexo,
+                "masculino" : masculino
+            }
+            lista_dict_m.append(lista)
+        cursor.close()
+        cnx.close()
+        return lista_dict_m
+
+    def feminino_eleito(self):
+        cnx = mysql.connector.connect(user='admin', password='@d2019',
+                                host='127.0.0.1',
+                                database='candidatura')
+            
+        cursor = cnx.cursor()
+        query = "select c.sexo, count(c.sexo) as totalEleito from candidato c where c.sexo = 'F' and c.resultado like 'ELEITO %';" 
+
+        cursor.execute(query)
+        lista_dict_f = []
+
+        for (sexo, totalEleito) in cursor:
+            lista = {
+                "sexo": sexo,
+                "feminino" : totalEleito
+            }
+            lista_dict_f.append(lista)
+        cursor.close()
+        cnx.close()
+        return lista_dict_f
+
+    
+
+    def masculino_eleito(self):
+        cnx = mysql.connector.connect(user='admin', password='@d2019',
+                                host='127.0.0.1',
+                                database='candidatura')
+            
+        cursor = cnx.cursor()
+        query = "select c.sexo, count(c.sexo) as totalEleito from candidato c where c.sexo = 'M' and c.resultado like 'ELEITO %';" 
+
+        cursor.execute(query)
+        lista_dict_m = []
+
+        for (sexo, totalEleito) in cursor:
+            lista = {
+                "sexo": sexo,
+                "masculino" : totalEleito
+            }
+            lista_dict_m.append(lista)
+        cursor.close()
+        cnx.close()
+        return lista_dict_m

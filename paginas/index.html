@@ -62,7 +62,7 @@
   </div>
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Visualização de dados</a>
+    <a class="navbar-brand mr-1" href="https://github.com/Eduardojvr/visualizacao-eleicoes">Visualização de dados</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -84,7 +84,7 @@
       <li class="nav-item">
         <a class="nav-link" href="#">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span>
+          <span>Dashboard - Eleições 2016</span>
         </a>
       </li>
     </ul>
@@ -124,7 +124,7 @@
             <i class="fas fa-chart-area"></i>
             Candidatos por região</div>
           <div class="card-body" style="padding-left: 30px;">
-            <svg version="1.1" id="svg-map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="800px" height="800px" viewBox="0 0 450 460" enable-background="new 0 0 450 460" xml:space="preserve">
+            <svg version="1.1" id="svg-map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="600px" height="600px" viewBox="0 0 450 460" enable-background="new 0 0 450 460" xml:space="preserve">
               <g>
               <a xlink:href="#tocantins"  class="estado" name="Tocantins" code="17">
               <path stroke="#FFFFFF" stroke-width="1.0404" stroke-linecap="round" stroke-linejoin="round" d="M289.558,235.641
@@ -440,14 +440,36 @@
         </svg>
       </div>
         </div>
+
+
         <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+    <i class="fas fa-chart-bar"></i>
+    Participação nas eleições por sexo</div>
+                  <div class="card-body">
+                    <div id="chartdog" style="height: 250px;" ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+    <i class="fas fa-chart-pie"></i>
+    Candidaturas e Candidatos eleitos por sexo</div>
+                  <div class="card-body">
+                    <canvas id="graficoGenero" width="100%" height="50"></canvas>        </div>
+                  </div>
+                </div>
+
           <div class="col-lg-8">
             <div class="card mb-3">
               <div class="card-header">
 <i class="fas fa-chart-bar"></i>
 Candidaturas por partido</div>
               <div class="card-body">
-<canvas id="myBarChart" width="100%" height="50"></canvas>
+    <canvas id="myBarChart" width="100%" height="50"></canvas>
               </div>
             </div>
           </div>
@@ -461,8 +483,9 @@ Candidaturas por cor</div>
               </div>
             </div>
           </div>
+      
+          </div>
         </div>
-
       </div>
       <!-- /.container-fluid -->
 
@@ -500,6 +523,10 @@ Candidaturas por cor</div>
   <script src="//d3js.org/topojson.v1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
 <script type="text/javascript">
 
 // =============  Gráfico de barras ===============
@@ -694,6 +721,114 @@ var myLineChart = new Chart(ctx, {
     }
   }
   
+// ============= Gráfico doughnut ==============
+var participacao_m = {{ lista_json_participacao_m|safe }};
+var participacao_f = {{ lista_json_participacao_f|safe }};
+
+var masculino = participacao_m[0]['masculino'];
+var feminino = participacao_f[0]['feminino'];
+
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("chartdog", am4charts.PieChart);
+
+// Add data
+chart.data = [ {
+  "sexo": "Masculino",
+  "candidaturas": masculino
+}, {
+  "sexo": "Feminino",
+  "candidaturas": feminino
+}
+];
+
+// Set inner radius
+chart.innerRadius = am4core.percent(30);
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "candidaturas";
+pieSeries.dataFields.category = "sexo";
+pieSeries.slices.template.stroke = am4core.color("#fff");
+pieSeries.slices.template.strokeWidth = 2;
+pieSeries.slices.template.strokeOpacity = 1;
+
+// This creates initial animation
+pieSeries.hiddenState.properties.opacity = 1;
+pieSeries.hiddenState.properties.endAngle = -90;
+pieSeries.hiddenState.properties.startAngle = -90;
+
+}); // end am4core.ready()
+
+
+// ============= Gráfico barras candidaturas e candidatos eleitos por sexo
+var tmpF = {{lista_json_feminino_eleito|safe}};
+var tmpM = {{lista_json_masculino_eleito|safe}}
+
+var totalFeminino = tmpF[0]['feminino'];
+var totalMasculino = tmpM[0]['masculino'];
+
+var ctx = document.getElementById("graficoGenero");
+var myLineChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ["Masculino", "Feminino"],
+    datasets: [
+        {
+            label: "Total de candidaturas",
+            fillColor: "rgba(220,220,220,0.5)",
+            backgroundColor: "rgba(2,117,216,1)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: [masculino, feminino]
+        },
+        {
+            label: "Total eleito",
+            fillColor: "rgba(151,187,205,0.5)",
+            backgroundColor: "rgba(0,128,0,1)",
+            strokeColor: "rgba(151,187,205,0.8)",
+            highlightFill: "rgba(151,187,205,0.75)",
+            highlightStroke: "rgba(151,187,205,1)",
+            data: [totalMasculino, totalFeminino]
+        }
+    ],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 35
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 360000,
+          maxTicksLimit: 5
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
 </script>
 
 </body>
