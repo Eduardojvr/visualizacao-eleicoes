@@ -1,4 +1,4 @@
-use candidatura;
+use TF_E_dupla2_fimBD;
 
 select p.codPartido,p.sigla, count(c.idCandidato) from candidato c
 	inner join PARTIDO p
