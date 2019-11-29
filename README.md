@@ -4,8 +4,10 @@
 
 ##  📊 Visualização de dados: Eleições
 
-Este software consite em um dashboard voltado para a visulização de dados de forma simplificada das eleições brasileiras
-de 2016. Os dados utilizados nesta ferramenta foram obtidos por meio do "Brasil IO", disponível no endereço: https://brasil.io/dataset/eleicoes-brasil/candidatos.
+Este software consiste em um dashboard voltado para a visulização de dados de forma simplificada das eleições brasileiras
+de 2016. Os dados utilizados nesta ferramenta, foram obtidos por meio do "Brasil IO", e estão disponíveis no endereço: https://brasil.io/dataset/eleicoes-brasil/candidatos.
+
+A documentação do projeto, pode ser apreciada na pasta "documentação".
 
 ## ℹ️ Rodando a aplicação
 
@@ -16,17 +18,20 @@ de 2016. Os dados utilizados nesta ferramenta foram obtidos por meio do "Brasil 
 $ git clone https://github.com/Eduardojvr/visualizacao-eleicoes.git
 ```
 #### 2 - Utilizando o terminal, navegue até a pasta scripts localizada dentro do repositório clonado e, execute os scripts:
-🔨 -  TF_E_dupla2_fimFisico.sql
-🔨  - TF_E_dupla2_fimPopula.sql
-🔨  - TF_E_dupla2_fimControle.sql"
 
-#### 3 - Utilizando o pyenv com o python 3.6.4 instalado, execute o seguinte comando no terminal unix
+📝 -  TF_E_dupla2_fimFisico.sql
+
+📝  - TF_E_dupla2_fimPopula.sql
+
+📝  - TF_E_dupla2_fimControle.sql
+
+#### 3 - Utilizando o pyenv com o python 3.6.4 instalado, execute o seguinte comando no terminal unix dentro da pasta src
 
 ```Terminal
 $ pip install -r requirements.txt
 ```
 
-#### 4 - Utilizando o terminal, acesse a pastas src e execute o seguinte comando
+#### 4 - Utilizando o terminal,  dentro da pasta src, execute o seguinte comando
 
 ```Terminal
 $ ./manage.py runserver
