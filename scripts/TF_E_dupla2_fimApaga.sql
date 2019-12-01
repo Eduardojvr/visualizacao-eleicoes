@@ -9,8 +9,9 @@
 -- Banco de Dados .........: MySQL
 -- Base de Dados (nome) ...: TF_E_dupla2_fimBD
 --
--- Data Ultima Alteracao ..: 22/11/2019
---   => Apaga tabelas sem apagar base, apaga usuarios e apaga índices
+-- Data Ultima Alteracao ..: 01/12/2019
+--   => Apaga tabelas sem apagar base, apaga usuários e apaga índices
+--   => Adiciona apaga usuários
 --
 -- PROJETO => 01 Base de Dados
 --         => 04 Tabelas
@@ -19,12 +20,16 @@
 -- -----------------------------------------------------------------
 
 
-use TF_E_dupla2_fimBD;
+USE TF_E_dupla2_fimBD;
 
-drop table CANDIDATO;
+DROP TABLE CANDIDATO;
 
-drop table CARGO;
+DROP TABLE CARGO;
 
-drop table PARTIDO;
+DROP TABLE PARTIDO;
 
-drop table RACA;
+DROP TABLE RACA;
+
+DROP USER 'user';
+
+DROP USER 'admin';
