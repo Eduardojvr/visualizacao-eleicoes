@@ -78,7 +78,7 @@ class Banco:
                                count(c.codPartido) AS totalEleitos 
                         FROM candidato c
                         INNER JOIN partido p ON p.codPartido=c.codPartido 
-                        WHERE c.resultado LIKE 'ELEITO %'
+                        WHERE c.resultado LIKE 'ELEITO%'
                         GROUP BY c.codPartido ) c ON c.sigla=r.sigla
             ORDER BY totalEleitos asc;"""
         cursor.execute(query)
