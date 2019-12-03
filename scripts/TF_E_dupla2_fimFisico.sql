@@ -15,7 +15,9 @@
 -- PROJETO => 01 Base de Dados
 --         => 04 Tabelas
 --         => 02 Usuarios
---         => 01 índice
+--         => 01 Índice
+--         => 04 Visões
+--         => 13 Consultas
 -- -----------------------------------------------------------------
 
 CREATE DATABASE IF NOT EXISTS TF_E_dupla2_fimBD;
