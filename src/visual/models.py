@@ -17,7 +17,7 @@ class Banco:
             SELECT p.sigla,
                    count(c.idCandidato) AS t
             FROM candidato c
-            INNER JOIN PARTIDO p ON c.codPartido=p.codPartido
+            INNER JOIN PARTIDO p ON c.codPartido = p.codPartido
             GROUP BY c.codPartido
             ORDER BY t;
         """
@@ -118,91 +118,45 @@ class Banco:
         cnx.close()
         return lista_dict
 
-    def participacao_sexo_f(self):
+    def participacao_sexo(self):
         cnx = open_connection()
         cursor = cnx.cursor()
         query = """
-            SELECT c.sexo,
-                   count(c.sexo) AS feminino
-            FROM candidato c
-            WHERE c.sexo = 'F';
+            SELECT c.sexo          AS Sexo,
+                   cc.candidaturas AS Candidaturas,
+                   ce.eleitos      AS Eleitos,
+                   cne.naoEleitos  AS 'Nao Eleitos'
+            FROM CANDIDATO c
+            INNER JOIN (SELECT sexo,
+                               COUNT(sexo) as candidaturas
+                        FROM CANDIDATO
+                        GROUP BY 1) AS cc ON c.sexo = cc.sexo
+            INNER JOIN (SELECT sexo,
+                               COUNT(sexo) as eleitos
+                        FROM CANDIDATO
+                        WHERE resultado LIKE 'ELEITO%'
+                        GROUP BY 1) AS ce ON c.sexo = ce.sexo
+            INNER JOIN (SELECT sexo,
+                               COUNT(sexo) as naoEleitos
+                        FROM CANDIDATO
+                        WHERE resultado NOT LIKE 'ELEITO%'
+                        GROUP BY 1) AS cne ON c.sexo = cne.sexo
+            GROUP BY 1
+            ORDER BY 2 DESC,
+                     3 DESC,
+                     4 DESC;
         """
 
         cursor.execute(query)
-        lista_dict_f = []
+        lista_dict = []
 
-        for (sexo, feminino) in cursor:
-            lista = {
+        for (sexo, candidaturas, eleitos, nao_eleitos) in cursor:
+            lista_dict.append({
                 "sexo": sexo,
-                "feminino" : feminino
-            }
-            lista_dict_f.append(lista)
+                "candidaturas": candidaturas,
+                "eleitos": eleitos,
+                "nao_eleitos": nao_eleitos
+            })
         cursor.close()
         cnx.close()
-        return lista_dict_f
-
-    def participacao_sexo_m(self):
-        cnx = open_connection()
-        cursor = cnx.cursor()
-        query = """
-            SELECT c.sexo,
-                   count(c.sexo) AS masculino
-            FROM candidato c
-            WHERE c.sexo = 'M';"""
-
-        cursor.execute(query)
-        lista_dict_m = []
-
-        for (sexo, masculino) in cursor:
-            lista = {
-                "sexo": sexo,
-                "masculino" : masculino
-            }
-            lista_dict_m.append(lista)
-        cursor.close()
-        cnx.close()
-        return lista_dict_m
-
-    def feminino_eleito(self):
-        cnx = open_connection()
-        cursor = cnx.cursor()
-        query = """
-            SELECT c.sexo,
-                   count(c.sexo) AS totalEleito
-            FROM candidato c
-            WHERE c.sexo = 'F' and c.resultado LIKE 'ELEITO %';"""
-
-        cursor.execute(query)
-        lista_dict_f = []
-
-        for (sexo, totalEleito) in cursor:
-            lista = {
-                "sexo": sexo,
-                "feminino" : totalEleito
-            }
-            lista_dict_f.append(lista)
-        cursor.close()
-        cnx.close()
-        return lista_dict_f
-
-    def masculino_eleito(self):
-        cnx = open_connection()
-        cursor = cnx.cursor()
-        query = """
-            SELECT c.sexo,
-                   count(c.sexo) AS totalEleito
-            FROM candidato c
-            WHERE c.sexo = 'M' and c.resultado LIKE 'ELEITO %';"""
-
-        cursor.execute(query)
-        lista_dict_m = []
-
-        for (sexo, totalEleito) in cursor:
-            lista = {
-                "sexo": sexo,
-                "masculino" : totalEleito
-            }
-            lista_dict_m.append(lista)
-        cursor.close()
-        cnx.close()
-        return lista_dict_m
+        return lista_dict
